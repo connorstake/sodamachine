@@ -1,0 +1,76 @@
+@host = localhost:8080
+
+// Register User
+POST http://{{host}}/api/user HTTP/1.1
+content-type: application/json
+    
+{
+
+    "username": "max.mustermann",
+    "password": "123465789",
+    "deposit": 0,
+    "role": "seller"
+}
+
+###
+
+// Register User
+POST http://{{host}}/api/user HTTP/1.1
+content-type: application/json
+    
+{
+
+    "username": "don.draper",
+    "password": "123465789",
+    "deposit": 0,
+    "role": "buyer"
+}
+
+###
+
+
+DELETE http://{{host}}/api/user HTTP/1.1
+content-type: application/json
+    
+{
+    "username": "max.mustermann",
+    "password": "123465789"
+}
+
+###
+
+
+
+DELETE http://{{host}}/api/user HTTP/1.1
+content-type: application/json
+    
+{
+    "username": "max.mustermann",
+    "password": "123465789"
+}
+
+###
+
+
+
+POST http://{{host}}/api/secured/deposit HTTP/1.1
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRvbi5kcmFwZXIiLCJleHAiOjE2NjU5NjA3MDR9.LjM4U0FTlg_p8BJuNC-dSvYbt1SJFAbvP79CAzZMBvA
+    
+{
+    "depositAmount": 100
+}
+
+###
+
+
+POST http://{{host}}/api/secured/user/reset HTTP/1.1
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRvbi5kcmFwZXIiLCJleHAiOjE2NjU5NjA3MDR9.LjM4U0FTlg_p8BJuNC-dSvYbt1SJFAbvP79CAzZMBvA
+    
+{
+}
+
+###
+
+
