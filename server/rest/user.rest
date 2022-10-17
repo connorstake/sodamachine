@@ -1,7 +1,7 @@
 @host = localhost:8080
 
 // Register User
-POST http://{{host}}/api/user HTTP/1.1
+POST http://{{host}}/api/user/register HTTP/1.1
 content-type: application/json
     
 {
@@ -15,7 +15,7 @@ content-type: application/json
 ###
 
 // Register User
-POST http://{{host}}/api/user HTTP/1.1
+POST http://{{host}}/api/user/register HTTP/1.1
 content-type: application/json
     
 {
@@ -28,8 +28,17 @@ content-type: application/json
 
 ###
 
+// LoginUser
+POST http://{{host}}/api/user/login HTTP/1.1
+content-type: application/json
+    
+{
 
-DELETE http://{{host}}/api/user HTTP/1.1
+    "username": "max.mustermann",
+    "password": "123465789"
+}
+
+DELETE http://{{host}}/api/user/register HTTP/1.1
 content-type: application/json
     
 {
@@ -41,7 +50,7 @@ content-type: application/json
 
 
 
-DELETE http://{{host}}/api/user HTTP/1.1
+DELETE http://{{host}}/api/user/register HTTP/1.1
 content-type: application/json
     
 {

@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/mvpmatch/server/auth"
 	"github.com/mvpmatch/server/database"
 	"github.com/mvpmatch/server/models"
 )
@@ -11,11 +12,17 @@ import (
 type DeleteRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
+	Role     string `json:"role"`
 }
 
 type DepositRequest struct {
 	Username      string `json:"username"`
 	DepositAmount int    `json:"depositAmount"`
+}
+
+type LoginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 func RegisterUser(context *gin.Context) {
@@ -30,6 +37,7 @@ func RegisterUser(context *gin.Context) {
 		context.Abort()
 		return
 	}
+	user.Deposit = 0
 	record := database.Instance.Create(&user)
 	if record.Error != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
@@ -37,6 +45,40 @@ func RegisterUser(context *gin.Context) {
 		return
 	}
 	context.JSON(http.StatusCreated, gin.H{"userId": user.ID, "username": user.Username})
+}
+
+func LoginUser(context *gin.Context) {
+	var user models.User
+	var request LoginRequest
+	if err := context.ShouldBindJSON(&request); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		context.Abort()
+		return
+	}
+
+	// check if username exists and password is correct
+	record := database.Instance.Where("username = ?", request.Username).First(&user)
+	if record.Error != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
+		context.Abort()
+		return
+	}
+
+	credentialError := user.CheckPassword(request.Password)
+	if credentialError != nil {
+		context.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
+		context.Abort()
+		return
+	}
+
+	tokenString, err := auth.GenerateJWT(user.Username)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		context.Abort()
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"userId": user.ID, "username": user.Username, "token": tokenString})
 }
 
 func DeleteUser(context *gin.Context) {

@@ -8,7 +8,6 @@ import (
 	"github.com/mvpmatch/server/models"
 )
 
-
 func AddProduct(context *gin.Context) {
 	var user models.User
 	var product models.Product
@@ -42,6 +41,15 @@ func AddProduct(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"sellerId": user.ID, "productName": product.ProductName, "cost": product.Cost, "amountAvailable": product.AmountAvailable})
 }
 
+func GetAllProducts(context *gin.Context) {
+	var product models.Product
+	record := database.Instance.Find(&product)
+	if record.Error != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
+		context.Abort()
+		return
+	}
 
+	context.JSON(http.StatusOK, gin.H{"products": product})
 
-
+}

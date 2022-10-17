@@ -3,13 +3,13 @@
 
 POST http://{{host}}/api/secured/product HTTP/1.1
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heC5tdXN0ZXJtYW5uIiwiZXhwIjoxNjY1OTI1NDg5fQ.VoJS5mCRJ2mhKLErGtnla_esZzl7_rNgCdpW6jW8FmY
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heC5tdXN0ZXJtYW5uIiwiZXhwIjoxNjY2MDM0MzEyfQ.EPcn4g7ILx-KWAZFpUMkKk5jw6GewAqGjG1ZzkWQrfU
     
 {
     "sellerID": 3,
     "amountAvailable": 150,
-    "productName": "Coca-Cola",
-    "cost": 5
+    "productName": "Sprite",
+    "cost": 4
 }
 
 ###
@@ -25,4 +25,13 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRvbi5kcmFw
 {
     "productID": 3,
     "amount": 4
+}
+
+###
+
+
+GET http://{{host}}/api/products/ HTTP/1.1
+content-type: application/json
+
+{
 }
