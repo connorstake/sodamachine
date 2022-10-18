@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -13,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AuthService from "../services/auth";
+import {useNavigate} from 'react-router-dom'
 
 function Copyright(props) {
   return (
@@ -30,6 +32,15 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Register() {
+
+  const navigate= useNavigate();
+
+  const [checked, setChecked] = React.useState(false);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -38,11 +49,25 @@ export default function Register() {
       password: data.get('password'),
     });
 
+    let role = ""
+
+    if (checked) {
+      role = "seller"
+    } else {
+      role = "buyer"
+    }
+
     AuthService.register(
       data.get('username'),
-      "buyer",
+      role,
       data.get('password')
-    )
+    ).then(
+      (res) => {
+      console.log(res)
+      localStorage.setItem("username", res["username"]);
+      localStorage.setItem("token", res["token"]);
+      navigate('/profile')
+      })
   };
 
 
@@ -96,9 +121,12 @@ export default function Register() {
             >
               Sign Up
             </Button>
+            <FormGroup>
+              <FormControlLabel control={<Checkbox onChange={handleChange} checked={checked}/> } label="Seller?" />
+            </FormGroup>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

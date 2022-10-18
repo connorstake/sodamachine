@@ -18,7 +18,9 @@ func main() {
 
 func initRouter() *gin.Engine {
 	router := gin.Default()
-	router.Use(cors.Default())
+	router.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+	}))
 	api := router.Group("/api")
 	{
 		api.POST("/token", controllers.GenerateToken)
@@ -29,11 +31,14 @@ func initRouter() *gin.Engine {
 		{
 			secured.GET("/ping", controllers.Ping)
 			secured.DELETE("/user", controllers.DeleteUser)
+			secured.GET("/user", controllers.GetUserInfo)
 			secured.POST("/user/reset", controllers.ResetDeposit)
 			secured.POST("/deposit", controllers.DepositFunds)
+			// PRODUCTS
+			secured.GET("/products", controllers.GetAllProductsBySeller)
 			secured.POST("/product", controllers.AddProduct)
 			secured.POST("/product/buy", controllers.BuyProduct)
-			secured.DELETE("/product", controllers.DeleteProduct)
+			secured.POST("/product/delete", controllers.DeleteProduct)
 		}
 	}
 	return router

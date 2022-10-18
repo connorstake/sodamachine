@@ -17,13 +17,4 @@ authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heC5tdXN0
 ###
 
 
-
-DELETE http://{{host}}/api/secured/product HTTP/1.1
-content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heC5tdXN0ZXJtYW5uIiwiZXhwIjoxNjY1OTI1NDg5fQ.VoJS5mCRJ2mhKLErGtnla_esZzl7_rNgCdpW6jW8FmY
-    
-{
-    "productID": 2
-}
-
 ###

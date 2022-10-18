@@ -31,12 +31,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-
-    const [authenticated, setauthenticated] = useState(localStorage.getItem(localStorage.getItem("user")|| false));
-
-
     const navigate= useNavigate();
-  const handleSubmit = (event) => {
+    const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
@@ -109,8 +105,8 @@ export default function Login() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
+                <Link href="/register" variant="body2">
+                  Don't have an account? Register
                 </Link>
               </Grid>
             </Grid>

@@ -16,13 +16,16 @@ type DeleteRequest struct {
 }
 
 type DepositRequest struct {
-	Username      string `json:"username"`
-	DepositAmount int    `json:"depositAmount"`
+	DepositAmount int `json:"depositAmount"`
 }
 
 type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
+}
+
+type GetUserRequest struct {
+	token string `json:"token"`
 }
 
 func RegisterUser(context *gin.Context) {
@@ -44,7 +47,14 @@ func RegisterUser(context *gin.Context) {
 		context.Abort()
 		return
 	}
-	context.JSON(http.StatusCreated, gin.H{"userId": user.ID, "username": user.Username})
+
+	tokenString, err := auth.GenerateJWT(user.Username)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		context.Abort()
+		return
+	}
+	context.JSON(http.StatusCreated, gin.H{"userId": user.ID, "username": user.Username, "role": user.Role, "token": tokenString})
 }
 
 func LoginUser(context *gin.Context) {
@@ -78,7 +88,7 @@ func LoginUser(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"userId": user.ID, "username": user.Username, "token": tokenString})
+	context.JSON(http.StatusOK, gin.H{"userId": user.ID, "username": user.Username, "token": tokenString, "role": user.Role})
 }
 
 func DeleteUser(context *gin.Context) {
@@ -162,4 +172,16 @@ func ResetDeposit(context *gin.Context) {
 
 	record.Save(&user)
 	context.JSON(http.StatusOK, gin.H{"username": user.Username, "deposit": user.Deposit})
+}
+
+func GetUserInfo(context *gin.Context) {
+	var user models.User
+
+	record := database.Instance.Where("username = ?", context.Params.ByName("username")).First(&user)
+	if record.Error != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
+		context.Abort()
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{"username": user.Username, "deposit": user.Deposit, "role": user.Role})
 }

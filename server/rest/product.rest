@@ -9,7 +9,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heC5tdXN0
     "sellerID": 3,
     "amountAvailable": 150,
     "productName": "Sprite",
-    "cost": 4
+    "cost": 5
 }
 
 ###
@@ -34,4 +34,32 @@ GET http://{{host}}/api/products/ HTTP/1.1
 content-type: application/json
 
 {
+}
+
+###
+
+GET http://{{host}}/api/secured/products/ HTTP/1.1
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1heC5tdXN0ZXJtYW5uIiwiZXhwIjoxNjY2MTM1NDIyfQ.A1eQDuWCyj6LPVDgtrlr3ziEXZAGOTKkhQXUmMUitW0
+
+{
+}
+
+###
+GET http://{{host}}/api/secured/products/ HTTP/1.1
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlbGxlciIsImV4cCI6MTY2NjE0MjQ4Mn0.zTZCMFZo-QP8XLpq_j2D1lqHdHeVBQTGC0OPwE72qa0
+
+{
+}
+
+
+###
+
+DELETE http://{{host}}/api/secured/product/delete HTTP/1.1
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlbGxlciIsImV4cCI6MTY2NjE0MjQ4Mn0.zTZCMFZo-QP8XLpq_j2D1lqHdHeVBQTGC0OPwE72qa0
+
+{
+    "productID": 10
 }

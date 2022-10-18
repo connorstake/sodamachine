@@ -17,10 +17,9 @@ func AddProduct(context *gin.Context) {
 		return
 	}
 
-	// check if username exists and password is correct
-	record := database.Instance.Where("id = ?", product.SellerID).First(&user)
-	if record.Error != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
+	userRecord := database.Instance.Where("username = ?", context.Params.ByName("username")).First(&user)
+	if userRecord.Error != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": userRecord.Error.Error()})
 		context.Abort()
 		return
 	}
@@ -31,8 +30,10 @@ func AddProduct(context *gin.Context) {
 		return
 	}
 
+	product.SellerID = user.ID
+
 	createRecord := database.Instance.Create(&product)
-	if record.Error != nil {
+	if createRecord.Error != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": createRecord.Error.Error()})
 		context.Abort()
 		return
@@ -42,14 +43,34 @@ func AddProduct(context *gin.Context) {
 }
 
 func GetAllProducts(context *gin.Context) {
-	var product models.Product
-	record := database.Instance.Find(&product)
+	var products []models.Product
+	record := database.Instance.Find(&products)
 	if record.Error != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
 		context.Abort()
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"products": product})
+	context.JSON(http.StatusOK, gin.H{"products": products})
+}
 
+func GetAllProductsBySeller(context *gin.Context) {
+	var products []models.Product
+	var user models.User
+
+	userRecord := database.Instance.Where("username = ?", context.Params.ByName("username")).First(&user)
+	if userRecord.Error != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": userRecord.Error.Error()})
+		context.Abort()
+		return
+	}
+
+	record := database.Instance.Find(&products, "seller_id = ?", user.ID)
+	if record.Error != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
+		context.Abort()
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"products": products})
 }

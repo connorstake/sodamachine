@@ -15,8 +15,8 @@ type DeleteProductRequest struct {
 }
 
 type BuyProductRequest struct {
-	ProductID uint
-	Amount    int
+	Amount    int  `json:"amount" binding:"required"`
+	ProductID uint `json:"productID" binding:"required"`
 }
 
 func Ping(context *gin.Context) {
@@ -110,5 +110,5 @@ func BuyProduct(context *gin.Context) {
 
 	record.Save(&product)
 	userRecord.Save(&user)
-	context.JSON(http.StatusOK, gin.H{"change": change})
+	context.JSON(http.StatusOK, gin.H{"change": change, "deposit": user.Deposit})
 }

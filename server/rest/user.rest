@@ -37,13 +37,15 @@ content-type: application/json
     "username": "max.mustermann",
     "password": "123465789"
 }
+###
 
-DELETE http://{{host}}/api/user/register HTTP/1.1
+POST http://{{host}}/api/user/register HTTP/1.1
 content-type: application/json
     
 {
-    "username": "max.mustermann",
-    "password": "123465789"
+    "username": "matt.lovey",
+    "password": "12345678",
+    "role": "buyer"
 }
 
 ###
@@ -64,7 +66,7 @@ content-type: application/json
 
 POST http://{{host}}/api/secured/deposit HTTP/1.1
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRvbi5kcmFwZXIiLCJleHAiOjE2NjU5NjA3MDR9.LjM4U0FTlg_p8BJuNC-dSvYbt1SJFAbvP79CAzZMBvA
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvbS5jcnVpc2UiLCJleHAiOjE2NjYxMjQzNjZ9.HxOH9HehyAC7oEPUI7Iwl_luVCZVsqypofJb_6gikwo
     
 {
     "depositAmount": 100
@@ -75,8 +77,18 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRvbi5kcmFw
 
 POST http://{{host}}/api/secured/user/reset HTTP/1.1
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRvbi5kcmFwZXIiLCJleHAiOjE2NjU5NjA3MDR9.LjM4U0FTlg_p8BJuNC-dSvYbt1SJFAbvP79CAzZMBvA
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvbS5jcnVpc2UiLCJleHAiOjE2NjYxMjQzNjZ9.HxOH9HehyAC7oEPUI7Iwl_luVCZVsqypofJb_6gikwo
     
+{
+}
+
+###
+
+
+GET http://{{host}}/api/secured/user/ HTTP/1.1
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRvbS5jcnVpc2UiLCJleHAiOjE2NjYxMjQzNjZ9.HxOH9HehyAC7oEPUI7Iwl_luVCZVsqypofJb_6gikwo
+
 {
 }
 
