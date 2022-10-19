@@ -23,3 +23,15 @@ content-type: application/json
 
 ###
 
+
+
+POST http://{{host}}/api/token HTTP/1.1
+content-type: application/json
+    
+{
+    "username": "buyer",
+    "password": "12345678"
+}
+
+###
+

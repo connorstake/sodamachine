@@ -30,7 +30,7 @@ func initRouter() *gin.Engine {
 		secured := api.Group("/secured").Use(middlewares.Auth())
 		{
 			secured.GET("/ping", controllers.Ping)
-			secured.DELETE("/user", controllers.DeleteUser)
+			secured.POST("/user/delete", controllers.DeleteUser)
 			secured.GET("/user", controllers.GetUserInfo)
 			secured.POST("/user/reset", controllers.ResetDeposit)
 			secured.POST("/deposit", controllers.DepositFunds)

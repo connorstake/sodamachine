@@ -1,7 +1,5 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Routes, Route, BrowserRouter as Router ,Link, Navigate } from "react-router-dom";
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Register from './components/Register';
 import Login from './components/Login';
 import Profile from './components/Profile';

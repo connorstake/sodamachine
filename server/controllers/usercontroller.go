@@ -99,30 +99,26 @@ func LoginUser(context *gin.Context) {
 
 // DeleteUser deletes a user in the database
 func DeleteUser(context *gin.Context) {
-	var request DeleteRequest
 	var user models.User
-	if err := context.ShouldBindJSON(&request); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		context.Abort()
-		return
-	}
-
+	var products []models.Product
 	// check if username exists and password is correct
-	record := database.Instance.Where("username = ?", request.Username).First(&user)
+	record := database.Instance.Where("username = ?", context.Params.ByName("username")).First(&user)
 	if record.Error != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
 		context.Abort()
 		return
 	}
-	credentialError := user.CheckPassword(request.Password)
-	if credentialError != nil {
-		context.JSON(http.StatusUnauthorized, gin.H{"error": "invalid credentials"})
+
+	productRecord := database.Instance.Find(&products, "seller_id = ?", user.ID)
+	if record.Error != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": record.Error.Error()})
 		context.Abort()
 		return
 	}
 
-	database.Instance.Delete(&user)
-	context.JSON(http.StatusCreated, gin.H{"userId": user.ID, "username": user.Username, "password": user.Password})
+	record.Unscoped().Delete(&user)
+	productRecord.Unscoped().Delete(&products)
+	context.JSON(http.StatusCreated, gin.H{"userId": user.ID, "username": user.Username})
 }
 
 // DepositFunds checks the denomination for new deposits and updates the database
