@@ -9,25 +9,30 @@ import (
 	"github.com/mvpmatch/server/models"
 )
 
+// DeleteRequest is the input format for deleting a user
 type DeleteRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Role     string `json:"role"`
 }
 
+// DepositRequest is the input format for depositing money
 type DepositRequest struct {
 	DepositAmount int `json:"depositAmount"`
 }
 
+// LoginRequest is the input format for logging in
 type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
+// GetUserRequest is the input format for retrieving user information
 type GetUserRequest struct {
-	token string `json:"token"`
+	Token string `json:"token"`
 }
 
+// RegisterUser accepts the username and password to create a new user in the database
 func RegisterUser(context *gin.Context) {
 	var user models.User
 	if err := context.ShouldBindJSON(&user); err != nil {
@@ -57,6 +62,7 @@ func RegisterUser(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"userId": user.ID, "username": user.Username, "role": user.Role, "token": tokenString})
 }
 
+// LoginUser checks user credentials and returns a new access token
 func LoginUser(context *gin.Context) {
 	var user models.User
 	var request LoginRequest
@@ -91,6 +97,7 @@ func LoginUser(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"userId": user.ID, "username": user.Username, "token": tokenString, "role": user.Role})
 }
 
+// DeleteUser deletes a user in the database
 func DeleteUser(context *gin.Context) {
 	var request DeleteRequest
 	var user models.User
@@ -118,6 +125,7 @@ func DeleteUser(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"userId": user.ID, "username": user.Username, "password": user.Password})
 }
 
+// DepositFunds checks the denomination for new deposits and updates the database
 func DepositFunds(context *gin.Context) {
 	var user models.User
 	var request DepositRequest
@@ -152,6 +160,7 @@ func DepositFunds(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"username": user.Username, "deposit": user.Deposit})
 }
 
+// ResetDeposit sets the users current deposit to zero
 func ResetDeposit(context *gin.Context) {
 	var user models.User
 
@@ -174,6 +183,7 @@ func ResetDeposit(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"username": user.Username, "deposit": user.Deposit})
 }
 
+// GetUserInfo returns the necessary information for the frontend to do access controls and update info
 func GetUserInfo(context *gin.Context) {
 	var user models.User
 

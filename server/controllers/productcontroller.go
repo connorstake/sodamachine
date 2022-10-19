@@ -8,6 +8,7 @@ import (
 	"github.com/mvpmatch/server/models"
 )
 
+// AddProduct is a protected handler that creates a new instace of a product
 func AddProduct(context *gin.Context) {
 	var user models.User
 	var product models.Product
@@ -42,6 +43,7 @@ func AddProduct(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"sellerId": user.ID, "productName": product.ProductName, "cost": product.Cost, "amountAvailable": product.AmountAvailable})
 }
 
+// GetAllProducts returns all products in the database that has never been deleted
 func GetAllProducts(context *gin.Context) {
 	var products []models.Product
 	record := database.Instance.Find(&products)
@@ -54,6 +56,7 @@ func GetAllProducts(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"products": products})
 }
 
+// GetAllProductsBySeller returns a list of all products by a specific seller
 func GetAllProductsBySeller(context *gin.Context) {
 	var products []models.Product
 	var user models.User

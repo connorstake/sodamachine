@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Auth checks the validity of a users access token and passes the claims in the context
 func Auth() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		tokenString := context.GetHeader("Authorization")
@@ -23,11 +24,4 @@ func Auth() gin.HandlerFunc {
 		context.AddParam("username", claims.Username)
 		context.Next()
 	}
-}
-
-func ProductAuth() gin.HandlerFunc {
-	return func(context *gin.Context) {
-
-	}
-
 }

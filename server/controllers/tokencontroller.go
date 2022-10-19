@@ -9,11 +9,13 @@ import (
 	"github.com/mvpmatch/server/models"
 )
 
+// TokenRequest is the input struct to generate a new token
 type TokenRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
+// GenerateToken creates a new token for a user after checking the given credentials 
 func GenerateToken(context *gin.Context) {
 	var request TokenRequest
 	var user models.User

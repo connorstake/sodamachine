@@ -14,6 +14,7 @@ type JWTClaim struct {
 	jwt.StandardClaims
 }
 
+// GenerateJWT creates a new token for a user with their username
 func GenerateJWT(username string) (tokenString string, err error) {
 	expirationTime := time.Now().Add(1 * time.Hour)
 	claims := &JWTClaim{
@@ -26,6 +27,8 @@ func GenerateJWT(username string) (tokenString string, err error) {
 	tokenString, err = token.SignedString(jwtKey)
 	return
 }
+
+// ValidateToken checks that a token is valid as well as whether or not it is expired
 func ValidateToken(signedToken string) (claim *JWTClaim, err error) {
 	token, err := jwt.ParseWithClaims(
 		signedToken,
