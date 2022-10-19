@@ -1,6 +1,9 @@
 package main
 
 import (
+	"flag"
+	"fmt"
+
 	"github.com/gin-gonic/contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/mvpmatch/server/controllers"
@@ -9,7 +12,15 @@ import (
 )
 
 func main() {
-	database.Connect("root:password@tcp(localhost:3306)/mvpmatch?parseTime=true")
+
+	var username, password string
+	flag.StringVar(&username, "u", "root", "MySQL user")
+	flag.StringVar(&password, "p", "password", "MySQL Password")
+
+	flag.Parse()
+
+	connectionString := fmt.Sprintf("%s:%s@tcp(localhost:3306)/mvpmatch?parseTime=true", username, password)
+	database.Connect(connectionString)
 	database.Migrate()
 	// Initialize Router
 	router := initRouter()
