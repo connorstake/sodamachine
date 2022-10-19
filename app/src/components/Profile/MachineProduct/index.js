@@ -32,7 +32,6 @@ const genRandomColor = (idx) => {
 
     if (idx > colors.length -1) {
         idx = Math.floor(idx/colors.length)
-        console.log(idx)
     }
     return colors[idx]
 }

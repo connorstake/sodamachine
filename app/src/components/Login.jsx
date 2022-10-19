@@ -1,10 +1,8 @@
-import {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,42 +13,38 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AuthService from "../services/auth";
 import {useNavigate} from 'react-router-dom'
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
 export default function Login() {
+
+    const [isSignedIn, setIsSignedIn] = React.useState(false);
     const navigate= useNavigate();
+
+    useEffect(() => {    
+      const currentUser = AuthService.getCurrentUser();
+
+      if (!currentUser) return
+      setIsSignedIn(true)
+  }, []);
+
     const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
-
 
     AuthService.login(
       data.get('username'),
       data.get('password')
     ).then(
         (res) => {
-        console.log(res)
         localStorage.setItem("username", res["username"]);
         localStorage.setItem("token", res["token"]);
         navigate('/profile')
         })
+  }
+
+  if (isSignedIn) {
+    navigate('/profile')
   }
 
   return (
@@ -112,7 +106,6 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

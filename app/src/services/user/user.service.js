@@ -6,7 +6,14 @@ const API_URL = 'http://localhost:8080/api/';
 class UserService {
 
   getUserInfo() {
-    return axios.get(API_URL + 'secured/user', { headers: authHeader() });
+    return axios.get(API_URL + 'secured/user', { headers: authHeader() })
+    .then(response => {
+      return response.data;
+    }).catch(
+      function (error) {
+        return error.response.data
+      }
+    )
   }
 
   depositFunds(depositAmount) {

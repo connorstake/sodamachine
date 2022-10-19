@@ -12,6 +12,7 @@ function App() {
     <Router>
       <div className="app-container">
       <Routes>
+        <Route path='/' element={<HOCForRouteProps Component={Login} />} />
         <Route path='/register' element={<HOCForRouteProps Component={Register} />}/>
         <Route path='/login' element={<HOCForRouteProps Component={Login} />} />
         <Route path='/profile' element={<HOCForRouteProps Component={Profile} />} />

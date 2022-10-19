@@ -37,7 +37,7 @@ export default function AddProductModel(props) {
 
   return (
     <div>
-      <Grid style={{backgroundColor: "green"}}>
+      <Grid style={{backgroundColor: "#36F1CD", borderRadius: 15, padding: 5, marginBottom: 20}}>
       <Button style={{color: 'white'}} onClick={handleOpen}>ADD PRODUCT</Button>
       </Grid>
       <Modal

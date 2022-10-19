@@ -16,18 +16,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AuthService from "../services/auth";
 import {useNavigate} from 'react-router-dom'
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
 
@@ -44,10 +32,6 @@ export default function Register() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
 
     let role = ""
 
@@ -63,7 +47,6 @@ export default function Register() {
       data.get('password')
     ).then(
       (res) => {
-      console.log(res)
       localStorage.setItem("username", res["username"]);
       localStorage.setItem("token", res["token"]);
       navigate('/profile')
@@ -133,7 +116,6 @@ export default function Register() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );

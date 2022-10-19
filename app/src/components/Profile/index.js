@@ -35,14 +35,18 @@ export default function Profile() {
         const fetchData  = async () => {
             let productResponse =  await ProductService.getAllProducts()
             let userResponse = await UserService.getUserInfo()
+
             let sellerProductResponse = await ProductService.getAllProductsBySeller()
-            console.log(sellerProductResponse)
             setSellerProducts(sellerProductResponse["products"])
             setProducts(productResponse["data"]["products"])
             setUser(userResponse["data"])
           }
           fetchData()
-          .catch(console.error);
+          .catch((error)=>{
+            if (error["response"]["data"]["error"] && error["response"]["data"]["error"].includes("token is expired")){
+                logout()
+            }}
+            );
 
     }, []);
 
@@ -67,7 +71,6 @@ export default function Profile() {
         const resetDeposit = async (D) => {
             const resetResponse = await UserService.resetFunds()
             setUser({...user, deposit: resetResponse["deposit"]}) 
-            console.log(resetResponse)
         }
         resetDeposit()
     }
@@ -75,7 +78,7 @@ export default function Profile() {
     const handleAddProduct = (productName, price, amountAvailable) => {
         const  addProduct = async () => {
             const addProductResponse = await ProductService.addProduct(productName, amountAvailable, price)
-            console.log(addProductResponse)
+
             let sellerProductResponse = await ProductService.getAllProductsBySeller()
             setSellerProducts(sellerProductResponse["products"])
         }
@@ -85,7 +88,7 @@ export default function Profile() {
     const handleDeleteProduct = (productID) => {
         const deleteProduct = async () => {
             const deleteProductResponse = await ProductService.deleteProduct(productID)
-            console.log(deleteProductResponse)
+   
             let sellerProductResponse = await ProductService.getAllProductsBySeller()
             setSellerProducts(sellerProductResponse["products"])
         }
@@ -97,16 +100,13 @@ export default function Profile() {
         navigate('/login')
     }
 
-    console.log(change)
-    console.log(user)
-    console.log(sellerProducts)
 
     if (products.length > 0 && user && user["role"] =="buyer") {
         return (
             <Grid container>
                 <Grid xs={12}>
-                    <Grid xs={3}>
-                        <Button onClick={()=>logout()}>Sign Out</Button>
+                    <Grid xs={3} style={{margin:20}}>
+                        <Button style={{backgroundColor:'#DB504A', color: 'white'}} onClick={()=>logout()}>Sign Out</Button>
                     </Grid>
                 </Grid>
                 <Grid xs={12} container style={{ justifyContent:'space-between', display: 'flex'}}>
@@ -120,7 +120,7 @@ export default function Profile() {
                             <Grid xs={12} style={{textAlign:'center', padding: 20, backgroundColor: 'white'}}>
                                 Deposited: {user["deposit"]}
                             </Grid>
-                            <Grid style={{textAlign:'center', backgroundColor: 'red'}}>
+                            <Grid style={{textAlign:'center', backgroundColor: '#DB504A'}}>
                                 <Button style={{color:'white'}} onClick={()=>handleReset()}>Reset</Button>
                             </Grid>
 
@@ -134,9 +134,9 @@ export default function Profile() {
                             })}
                             <Grid>
                                 {
-                                change.length > 0 ? (
-                                    <Grid xs={12}>
-                                        <Grid>Your Change: </Grid>
+                                change && change.length > 0 ? (
+                                    <Grid style={{backgroundColor:'black', color: 'white', textAlign: 'center'}} xs={12}>
+                                        <Grid >Your Change: </Grid>
                                         {change.map((v)=> {
                                             return (
                                                 <Grid>{v}</Grid>

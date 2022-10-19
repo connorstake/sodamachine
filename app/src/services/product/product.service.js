@@ -19,7 +19,6 @@ class ProductService {
     return axios
       .get(API_URL + "/secured/products",{ headers: authHeader() })
       .then(response => {
-        console.log(response)
         return response.data;
       });
   }
