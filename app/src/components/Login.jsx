@@ -1,50 +1,43 @@
-import React, {useState, useEffect} from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AuthService from "../services/auth";
-import {useNavigate} from 'react-router-dom'
+import React, {useEffect} from "react"
+import Avatar from "@mui/material/Avatar"
+import Button from "@mui/material/Button"
+import CssBaseline from "@mui/material/CssBaseline"
+import TextField from "@mui/material/TextField"
+import Link from "@mui/material/Link"
+import Grid from "@mui/material/Grid"
+import Box from "@mui/material/Box"
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
+import Typography from "@mui/material/Typography"
+import Container from "@mui/material/Container"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
+import AuthService from "../services/auth"
 
 
-const theme = createTheme();
+const theme = createTheme()
 
-export default function Login() {
+export default function Login(props) {
 
-    const [isSignedIn, setIsSignedIn] = React.useState(false);
-    const navigate= useNavigate();
+  useEffect(() => {    
+    const currentUser = AuthService.getCurrentUser()
 
-    useEffect(() => {    
-      const currentUser = AuthService.getCurrentUser();
+    if (!currentUser) return
+    props.navigate("/profile")
+  }, [])
 
-      if (!currentUser) return
-      setIsSignedIn(true)
-  }, []);
-
-    const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
 
     AuthService.login(
-      data.get('username'),
-      data.get('password')
+      data.get("username"),
+      data.get("password")
     ).then(
-        (res) => {
-        localStorage.setItem("username", res["username"]);
-        localStorage.setItem("token", res["token"]);
-        navigate('/profile')
-        })
-  }
-
-  if (isSignedIn) {
-    navigate('/profile')
+      (res) => {
+        localStorage.setItem("username", res["username"])
+        localStorage.setItem("token", res["token"])
+        localStorage.setItem("role", res["role"])
+        props.navigate("/profile")
+      })
   }
 
   return (
@@ -54,12 +47,12 @@ export default function Login() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -108,5 +101,5 @@ export default function Login() {
         </Box>
       </Container>
     </ThemeProvider>
-  );
+  )
 }

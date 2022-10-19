@@ -1,0 +1,64 @@
+env:
+  browser: true
+  commonjs: true
+  es2021: true
+  node: true
+extends:
+  - eslint:recommended
+  - plugin:react/recommended
+  - plugin:@typescript-eslint/recommended
+parser: "@typescript-eslint/parser"
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: latest
+plugins:
+  - react
+  - "@typescript-eslint"
+settings:
+  react:
+    version: detect
+rules:
+  indent:
+    - error
+    - 2
+  linebreak-style:
+    - error
+    - unix
+  quotes:
+    - error
+    - double
+  semi:
+    - error
+    - never
+  # These rules are off so we can still run and build successfully. We will slowly turn them on and fix the errors going forward.
+  "@typescript-eslint/no-var-requires":
+    - off
+  "@typescript-eslint/ban-types":
+    - off
+  "@typescript-eslint/ban-ts-comment":
+    - off
+  "@typescript-eslint/no-empty-function":
+    - off
+  "react/no-unescaped-entities":
+    - off
+  "react/react-in-jsx-scope":
+    - off
+  "react/prop-types":
+    - off
+  "react/no-children-prop":
+    - off
+  "react/jsx-key":
+    - off
+  "no-empty":
+    - off
+  "prefer-const":
+    - off
+  "no-useless-catch":
+    - off
+  "no-useless-escape":
+    - off
+  "no-mixed-spaces-and-tabs":
+    - off
+  "max-len":
+    - off

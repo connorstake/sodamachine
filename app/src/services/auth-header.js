@@ -1,9 +1,9 @@
 export function authHeader() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      return { Authorization: token };
-    } else {
-      return {};
-    }
+  const token = localStorage.getItem("token")
+  if (token) {
+    return { Authorization: token }
+  } else {
+    return {}
   }
+}
   

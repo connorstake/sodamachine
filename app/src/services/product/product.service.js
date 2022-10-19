@@ -1,13 +1,13 @@
-import axios from 'axios';
-import { authHeader } from '../auth-header';
+import axios from "axios"
+import { authHeader } from "../auth-header"
 
-const API_URL = 'http://localhost:8080/api';
+const API_URL = "http://localhost:8080/api"
 
 class ProductService {
 
 
   getUserBoard() {
-    return axios.get(API_URL + 'user', { headers: authHeader() });
+    return axios.get(API_URL + "user", { headers: authHeader() })
   }
 
   getAllProducts() {
@@ -19,8 +19,8 @@ class ProductService {
     return axios
       .get(API_URL + "/secured/products",{ headers: authHeader() })
       .then(response => {
-        return response.data;
-      });
+        return response.data
+      })
   }
 
   purchaseItem(productID) {
@@ -31,8 +31,8 @@ class ProductService {
         
       },{ headers: authHeader() })
       .then(response => {
-        return response.data;
-      });
+        return response.data
+      })
   }
 
   addProduct(productName, amountAvailable, price) {
@@ -46,8 +46,8 @@ class ProductService {
         
       },{ headers: authHeader() })
       .then(response => {
-        return response.data;
-      });
+        return response.data
+      })
   }
 
   deleteProduct(productID) {
@@ -57,9 +57,9 @@ class ProductService {
         productID,
       },{ headers: authHeader() })
       .then(response => {
-        return response.data;
-      });
+        return response.data
+      })
   }
 }
 
-export default new ProductService();
+export default new ProductService()
